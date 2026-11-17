@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Muhammad Armughan Bakhshi | Data Science & Full-Stack Engineering</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #090d16;
+            --bg-secondary: #111827;
+            --bg-card: rgba(17, 24, 39, 0.7);
+            --border-color: rgba(56, 189, 248, 0.18);
+            --border-hover: rgba(56, 189, 248, 0.5);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --accent-cyan: #38bdf8;
+            --accent-emerald: #10b981;
+            --accent-indigo: #818cf8;
+            --glow-cyan: rgba(56, 189, 248, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(56, 189, 248, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 85% 75%, rgba(16, 185, 129, 0.06) 0%, transparent 40%);
+        }
+
+        /* Subtle Grid Overlay */
+        .bg-grid {
+            position: fixed;
+            inset: 0;
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Navigation */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            background: rgba(9, 13, 22, 0.8);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .nav-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 68px;
+        }
+
+        .nav-logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: 1.05rem;
+            color: var(--text-primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-logo span {
+            color: var(--accent-cyan);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 28px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-cyan);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 96px 0 72px;
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 48px;
+            align-items: center;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            border-radius: 999px;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.25);
+            color: var(--accent-emerald);
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-bottom: 24px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent-emerald);
+            box-shadow: 0 0 8px var(--accent-emerald);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        .hero h1 {
+            font-size: clamp(2.4rem, 4.5vw, 3.5rem);
+            font-weight: 700;
+            line-height: 1.15;
+            letter-spacing: -0.03em;
+            margin-bottom: 16px;
+        }
+
+        .hero h1 .gradient-text {
+            background: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #10b981 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            margin-bottom: 28px;
+            max-width: 580px;
+        }
+
+        .hero-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 32px;
+            font-size: 0.88rem;
+            color: var(--text-muted);
+        }
+
+        .hero-meta span {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 22px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.92rem;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: var(--accent-cyan);
+            color: #090d16;
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: #7dd3fc;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text-primary);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent-cyan);
+            background: rgba(56, 189, 248, 0.08);
+            transform: translateY(-2px);
+        }
+
+        /* Terminal Card */
+        .terminal-window {
+            background: #0d1320;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 30px var(--glow-cyan);
+        }
+
+        .terminal-header {
+            background: #151e32;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .terminal-dots {
+            display: flex;
+            gap: 7px;
+        }
+
+        .dot {
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+        }
+
+        .dot-red { background: #ef4444; }
+        .dot-yellow { background: #f59e0b; }
+        .dot-green { background: #10b981; }
+
+        .terminal-title {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+
+        .terminal-body {
+            padding: 20px;
+            font-size: 0.85rem;
+            line-height: 1.7;
+            color: #cbd5e1;
+        }
+
+        .cmd-line {
+            color: var(--accent-emerald);
+            margin-bottom: 6px;
+        }
+
+        .cmd-prompt {
+            color: var(--accent-cyan);
+            font-weight: 700;
+        }
+
+        .json-key { color: #7dd3fc; }
+        .json-str { color: #a7f3d0; }
+        .json-num { color: #fcd34d; }
+
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 15px;
+            background: var(--accent-cyan);
+            vertical-align: middle;
+            animation: blink 1s step-end infinite;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
+        /* Section Layout */
+        section {
+            padding: 72px 0;
+        }
+
+        .section-header {
+            margin-bottom: 40px;
+        }
+
+        .section-tag {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--accent-cyan);
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        /* Experience & Education Banner */
+        .exp-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 28px;
+            transition: all 0.25s ease;
+            backdrop-filter: blur(8px);
+        }
+
+        .card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35), 0 0 20px rgba(56, 189, 248, 0.1);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .card-badge {
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            border-radius: 6px;
+            background: rgba(56, 189, 248, 0.12);
+            color: var(--accent-cyan);
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            white-space: nowrap;
+        }
+
+        .card-badge.nda {
+            background: rgba(245, 158, 11, 0.12);
+            color: #fbbf24;
+            border-color: rgba(245, 158, 11, 0.25);
+        }
+
+        .card-org {
+            font-size: 0.9rem;
+            color: var(--accent-emerald);
+            font-weight: 500;
+            margin-bottom: 12px;
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            font-size: 0.94rem;
+            margin-bottom: 18px;
+        }
+
+        /* Tech Tags */
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.76rem;
+            padding: 4px 10px;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.04);
+            color: #cbd5e1;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        /* Projects Grid */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+            gap: 24px;
+        }
+
+        .project-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .project-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-cyan);
+            margin-bottom: 18px;
+            font-weight: 700;
+        }
+
+        /* Skills Matrix */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+        }
+
+        .skill-group h3 {
+            font-size: 1rem;
+            color: var(--text-primary);
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .skill-group h3::before {
+            content: "";
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent-cyan);
+        }
+
+        /* Off-The-Clock Section */
+        .offclock-box {
+            background: linear-gradient(135deg, rgba(17, 24, 39, 0.85), rgba(15, 23, 42, 0.9));
+            border: 1px solid rgba(129, 140, 248, 0.25);
+            border-radius: 14px;
+            padding: 32px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 24px;
+        }
+
+        .offclock-item h4 {
+            font-size: 0.95rem;
+            color: var(--accent-indigo);
+            margin-bottom: 6px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .offclock-item p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 40px 0;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.88rem;
+        }
+
+        footer a {
+            color: var(--accent-cyan);
+            text-decoration: none;
+        }
+
+        @media (max-width: 860px) {
+            .hero {
+                grid-template-columns: 1fr;
+                padding-top: 56px;
+            }
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-grid"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="container nav-inner">
+            <a href="#" class="nav-logo">
+                <span>&gt;_</span> armughan.dev
+            </a>
+            <ul class="nav-links">
+                <li><a href="#experience">Experience</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#stack">Tech Stack</a></li>
+                <li><a href="#off-clock">Off-Clock</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <header class="hero">
+            <div>
+                <div class="status-badge">
+                    <span class="status-dot"></span>
+                    BS Data Science '28 @ FAST-NUCES Islamabad
+                </div>
+                <h1>
+                    Muhammad <br>
+                    <span class="gradient-text">Armughan Bakhshi</span>
+                </h1>
+                <p class="hero-subtitle">
+                    Data Science undergraduate, full-stack engineer, and applied AI &amp; cybersecurity builder crafting intelligent pipelines, scalable web platforms, and embedded robotics systems.
+                </p>
+                <div class="hero-meta">
+                    <span>Islamabad, Pakistan</span>
+                    <span>Agentic AI &amp; RAG</span>
+                    <span>ML Security &amp; Robotics</span>
+                </div>
+                <div class="hero-actions">
+                    <a href="#projects" class="btn btn-primary">Explore Featured Builds</a>
+                    <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">GitHub Profile &rarr;</a>
+                </div>
+            </div>
+
+            <!-- Interactive-Style Terminal Card -->
+            <div class="terminal-window">
+                <div class="terminal-header">
+                    <div class="terminal-dots">
+                        <span class="dot dot-red"></span>
+                        <span class="dot dot-yellow"></span>
+                        <span class="dot dot-green"></span>
+                    </div>
+                    <span class="terminal-title mono">armughan@fast-nuces:~</span>
+                </div>
+                <div class="terminal-body mono">
+                    <div class="cmd-line"><span class="cmd-prompt">$</span> cat profile.json</div>
+                    <div>{</div>
+                    <div>&nbsp;&nbsp;<span class="json-key">"name"</span>: <span class="json-str">"Muhammad Armughan Bakhshi"</span>,</div>
+                    <div>&nbsp;&nbsp;<span class="json-key">"degree"</span>: <span class="json-str">"BS Data Science (Batch '24)"</span>,</div>
+                    <div>&nbsp;&nbsp;<span class="json-key">"university"</span>: <span class="json-str">"FAST-NUCES Islamabad"</span>,</div>
+                    <div>&nbsp;&nbsp;<span class="json-key">"focus"</span>: [</div>
+                    <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="json-str">"Agentic AI &amp; RAG Systems"</span>,</div>
+                    <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="json-str">"ML Traffic Firewalls"</span>,</div>
+                    <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="json-str">"Full-Stack Engineering"</span>,</div>
+                    <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="json-str">"Autonomous Robotics"</span></div>
+                    <div>&nbsp;&nbsp;]</div>
+                    <div>}</div>
+                    <div class="cmd-line" style="margin-top: 8px;"><span class="cmd-prompt">$</span> <span class="cursor"></span></div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Experience & Research -->
+        <section id="experience">
+            <div class="section-header">
+                <span class="section-tag mono">01 // Track Record</span>
+                <h2 class="section-title">Experience &amp; Applied Research</h2>
+            </div>
+
+            <div class="exp-grid">
+                <article class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Cybersecurity Intern</h3>
+                        <span class="card-badge nda mono">NDA Protected</span>
+                    </div>
+                    <div class="card-org">AgriStreams</div>
+                    <p>
+                        Engineered a Python-based machine learning firewall designed to inspect, classify, and block malicious web traffic anomalies in real time, strengthening network edge defense.
+                    </p>
+                    <div class="tags">
+                        <span class="tag">Python</span>
+                        <span class="tag">Machine Learning</span>
+                        <span class="tag">Network Security</span>
+                        <span class="tag">Traffic Classification</span>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Remote AI Intern</h3>
+                        <span class="card-badge mono">Agentic AI</span>
+                    </div>
+                    <div class="card-org">FlyRank</div>
+                    <p>
+                        Designed agentic AI workflows, Retrieval-Augmented Generation (RAG) pipelines, and context-engineering architectures for automated reasoning and production deployment.
+                    </p>
+                    <div class="tags">
+                        <span class="tag">Agentic Workflows</span>
+                        <span class="tag">RAG</span>
+                        <span class="tag">Context Engineering</span>
+                        <span class="tag">LLMs</span>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">LLM Data &amp; Unlearning Research</h3>
+                        <span class="card-badge mono">Data Science</span>
+                    </div>
+                    <div class="card-org">Academic Research &bull; FAST-NUCES</div>
+                    <p>
+                        Investigating benchmark dataset contamination, data leakage vectors, and machine unlearning methodologies alongside interactive data visualizations built with D3.js and Power BI.
+                    </p>
+                    <div class="tags">
+                        <span class="tag">LLM Unlearning</span>
+                        <span class="tag">Data Leakage</span>
+                        <span class="tag">D3.js</span>
+                        <span class="tag">Power BI</span>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- Featured Projects -->
+        <section id="projects">
+            <div class="section-header">
+                <span class="section-tag mono">02 // Engineering Builds</span>
+                <h2 class="section-title">Featured Projects</h2>
+            </div>
+
+            <div class="projects-grid">
+                <!-- RideFlow -->
+                <article class="card project-card">
+                    <div>
+                        <div class="project-icon mono">RF</div>
+                        <div class="card-header">
+                            <h3 class="card-title">RideFlow</h3>
+                            <span class="card-badge mono">Full-Stack</span>
+                        </div>
+                        <p>
+                            End-to-end ride-hailing platform featuring multi-role dashboards (riders, drivers, admins), automated relational database triggers, and cloud-hosted MySQL state management.
+                        </p>
+                    </div>
+                    <div class="tags">
+                        <span class="tag">Node.js</span>
+                        <span class="tag">Express</span>
+                        <span class="tag">MySQL</span>
+                        <span class="tag">Vite</span>
+                        <span class="tag">Vanilla JS</span>
+                    </div>
+                </article>
+
+                <!-- Obsidian -->
+                <article class="card project-card">
+                    <div>
+                        <div class="project-icon mono">OB</div>
+                        <div class="card-header">
+                            <h3 class="card-title">Obsidian</h3>
+                            <span class="card-badge mono">Platform</span>
+                        </div>
+                        <p>
+                            Competitive esports and gaming hub supporting live tournament tracking, automated bracket generation, and an integrated peer-to-peer community marketplace.
+                        </p>
+                    </div>
+                    <div class="tags">
+                        <span class="tag">React</span>
+                        <span class="tag">Node.js</span>
+                        <span class="tag">Express</span>
+                        <span class="tag">MySQL</span>
+                    </div>
+                </article>
+
+                <!-- TrashBot -->
+                <article class="card project-card">
+                    <div>
+                        <div class="project-icon mono">TB</div>
+                        <div class="card-header">
+                            <h3 class="card-title">TrashBot</h3>
+                            <span class="card-badge mono">Robotics + CV</span>
+                        </div>
+                        <p>
+                            Autonomous firefighting rover built on dual ESP32 and Arduino Mega 2560 controllers, fusing flame/smoke sensor arrays, servo steering, and real-time YOLO computer vision over UDP.
+                        </p>
+                    </div>
+                    <div class="tags">
+                        <span class="tag">ESP32</span>
+                        <span class="tag">Arduino Mega</span>
+                        <span class="tag">YOLO</span>
+                        <span class="tag">UDP</span>
+                        <span class="tag">C++ / Python</span>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- Technical Stack -->
+        <section id="stack">
+            <div class="section-header">
+                <span class="section-tag mono">03 // Arsenal</span>
+                <h2 class="section-title">Technical Stack</h2>
+            </div>
+
+            <div class="skills-grid">
+                <div class="card skill-group">
+                    <h3>Languages &amp; Core</h3>
+                    <div class="tags">
+                        <span class="tag">Python</span>
+                        <span class="tag">C++</span>
+                        <span class="tag">JavaScript (ES6+)</span>
+                        <span class="tag">SQL</span>
+                        <span class="tag">HTML5 / CSS3</span>
+                    </div>
+                </div>
+
+                <div class="card skill-group">
+                    <h3>AI, Data &amp; Analytics</h3>
+                    <div class="tags">
+                        <span class="tag">RAG &amp; Agents</span>
+                        <span class="tag">YOLO / OpenCV</span>
+                        <span class="tag">Scikit-Learn</span>
+                        <span class="tag">Pandas / NumPy</span>
+                        <span class="tag">Power BI</span>
+                        <span class="tag">D3.js</span>
+                    </div>
+                </div>
+
+                <div class="card skill-group">
+                    <h3>Web &amp; Databases</h3>
+                    <div class="tags">
+                        <span class="tag">React</span>
+                        <span class="tag">Node.js</span>
+                        <span class="tag">Express</span>
+                        <span class="tag">MySQL</span>
+                        <span class="tag">PostgreSQL</span>
+                        <span class="tag">Supabase</span>
+                    </div>
+                </div>
+
+                <div class="card skill-group">
+                    <h3>Hardware &amp; Security</h3>
+                    <div class="tags">
+                        <span class="tag">ESP32 / Arduino</span>
+                        <span class="tag">ROS 2</span>
+                        <span class="tag">Burp Suite</span>
+                        <span class="tag">Git / GitHub</span>
+                        <span class="tag">Linux / VS Code</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Off The Clock -->
+        <section id="off-clock">
+            <div class="section-header">
+                <span class="section-tag mono">04 // Beyond The Terminal</span>
+                <h2 class="section-title">When I'm Not Coding</h2>
+            </div>
+
+            <div class="offclock-box">
+                <div class="offclock-item">
+                    <h4>// Co-op &amp; Tactical Gaming</h4>
+                    <p>
+                        Holding the frontline as a Galio Support main in League of Legends, or running high-stakes 4-player expeditions in GTFO, Risk of Rain 2, and Valorant.
+                    </p>
+                </div>
+                <div class="offclock-item">
+                    <h4>// Campus Competitions</h4>
+                    <p>
+                        Active participant in FAST-NUCES tech events including NaSCon ('25 Bug Catcher &amp; '26 Operation Blackout) and pickup campus sports between lectures.
+                    </p>
+                </div>
+                <div class="offclock-item">
+                    <h4>// Hardware &amp; Anime</h4>
+                    <p>
+                        Tinkering with custom Hall-effect mechanical keyboards, audio IEM tuning, and keeping up with One Piece, Vinland Saga, and Blue Lock.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p class="mono">Built by Muhammad Armughan Bakhshi &bull; Islamabad, PK</p>
+        </div>
+    </footer>
+
+    <script>
+        // Subtle interactive terminal typing replay on click
+        const terminal = document.querySelector('.terminal-window');
+        terminal.addEventListener('click', () => {
+            terminal.style.borderColor = '#38bdf8';
+            setTimeout(() => {
+                terminal.style.borderColor = 'rgba(56, 189, 248, 0.18)';
+            }, 400);
+        });
+    </script>
+</body>
+</html>
